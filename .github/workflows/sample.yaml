@@ -50,3 +50,6 @@ jobs:
         
       - name: TF Plan
         run: terraform plan
+
+      - name: TF Apply
+        run: terraform apply --auto-approve

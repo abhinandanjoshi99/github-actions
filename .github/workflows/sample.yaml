@@ -25,9 +25,7 @@ jobs:
 
   comment:
     if: contains(github.event.comment.body, 'terraform init')
-
     runs-on: ubuntu-latest
-
     steps:
       - name: Add comment to PR
         run: terraform init

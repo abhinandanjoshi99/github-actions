@@ -7,7 +7,8 @@ on:
 
 jobs:
 
-  plan-and-apply:
+  terraform-init:
+    if: contains(github.event.comment.body, 'terraform init')
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -21,13 +22,50 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
         with:
-        terraform_version: 1.2.5
+          terraform_version: 1.2.5
 
-  comment:
-    if: contains(github.event.comment.body, 'terraform init')
-
-    runs-on: ubuntu-latest
-
-    steps:
       - name: Add comment to PR
         run: terraform init
+
+
+  terraform-plan:
+    if: contains(github.event.comment.body, 'terraform plan')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Log in with Azure
+        uses: azure/login@v1
+        with:
+          creds: '${{ secrets.AZURE_CREDENTIALS }}'
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.2.5
+
+      - name: TF Init
+        id: init
+        run: terraform init
+        
+      - name: TF Plan
+        id: plan
+        run: terraform plan
+
+      - name: TF Apply
+        id: apply
+        run: terraform apply --auto-approve
+
+      - name: Comment PR
+        uses: actions/github-script@v3
+        with:
+          github-token: ${{ secrets.AJOSHI_TOKEN }}
+          script: |
+            const output =  `#### Terraform Apply 📖\`${{ steps.apply.outputs.stdout }}\``;
+            github.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: output
+            })

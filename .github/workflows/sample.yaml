@@ -45,7 +45,8 @@ jobs:
         with:
           terraform_version: 1.2.5
 
-      - name: Add comment to PR
-        run: |
-          terraform init
-          terraform plan
+      - name: TF Init
+        run: terraform init
+        
+      - name: TF Plan
+        run: terraform plan

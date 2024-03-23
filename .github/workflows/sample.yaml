@@ -8,6 +8,7 @@ on:
 jobs:
 
   plan-and-apply:
+    if: contains(github.event.comment.body, 'terraform init')
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -23,9 +24,5 @@ jobs:
         with:
           terraform_version: 1.2.5
 
-  comment:
-    if: contains(github.event.comment.body, 'terraform init')
-    runs-on: ubuntu-latest
-    steps:
       - name: Add comment to PR
         run: terraform init

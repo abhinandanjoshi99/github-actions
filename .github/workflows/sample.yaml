@@ -47,5 +47,5 @@ jobs:
 
       - name: Add comment to PR
         run: |
-          terraform init \
+          terraform init
           terraform plan

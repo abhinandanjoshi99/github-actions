@@ -68,7 +68,7 @@ jobs:
         uses: hashicorp/setup-terraform@v2
         with:
           terraform_version: 1.2.5
-          
+
       - name: Terraform init
         id: init        
         run: |
@@ -129,7 +129,22 @@ jobs:
         uses: hashicorp/setup-terraform@v2
         with:
           terraform_version: 1.2.5
-        
+          
+      - name: Terraform init
+        id: init        
+        run: |
+          export ARM_CLIENT_ID=$ARM_CLIENT_ID
+          export ARM_CLIENT_SECRET=$ARM_CLIENT_SECRET
+          export ARM_SUBSCRIPTION_ID=$ARM_SUBSCRIPTION_ID
+          export ARM_TENANT_ID=$ARM_TENANT_ID 
+          terraform init -no-color
+
+        env:
+          ARM_CLIENT_ID: ${{secrets.ARM_CLIENT_ID}}
+          ARM_CLIENT_SECRET: ${{secrets.ARM_CLIENT_SECRET}}
+          ARM_SUBSCRIPTION_ID: ${{secrets.ARM_SUBSCRIPTION_ID}}
+          ARM_TENANT_ID: ${{secrets.ARM_TENANT_ID}}
+
       - name: TF Apply
         id: apply
         run: |

@@ -114,7 +114,7 @@ jobs:
 
 
   terraform-apply:
-    if: contains(github.event.comment.body, 'terraform apply')
+    if: contains(github.event.comment.body, 'terrafrom apply')
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository

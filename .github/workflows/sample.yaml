@@ -62,7 +62,7 @@ jobs:
         with:
           github-token: ${{ secrets.AJOSHI_TOKEN }}
           script: |
-            const output =  `#### Terraform Apply 📖\`${{ steps.apply.outputs.stdout }}\``;
+            const output =  `## Terraform Apply 📖\`${{ steps.apply.outputs.stdout }}\``;
             github.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,

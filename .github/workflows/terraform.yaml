@@ -45,11 +45,13 @@ jobs:
           github-token: ${{ secrets.AJOSHI_TOKEN }}
           script: |
             const output =  `#### TF Init Output \`${{ steps.init.outputs.stdout }}\``;
+            const substr = '─────────────────────────────────────────────────────────────────────────────'
+            const output2 = ${output#*$substr}
             github.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: output
+              body: output2
             })
 
   terraform-plan:
